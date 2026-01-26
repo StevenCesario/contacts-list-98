@@ -8,10 +8,35 @@ const contactULContainer = document.getElementById('contact-ul-container');
 let contactList;
 if (localStorage.getItem('contactList')) {
     contactList = JSON.parse(localStorage.getItem('contactList'));
+    console.log("contactList: ", contactList);
+    for (let contactItem of contactList) {
+        console.log("contactItem: ", contactItem);
+        let liElement = document.createElement('li');
+        let liElementName = document.createElement('input');
+        let liElementPhone = document.createElement('input');
+        let liElementEditButton = document.createElement('button');
+        let liElementRemoveButton = document.createElement('button');
+
+        liElementName.placeholder = contactItem.contactName;
+        liElementPhone.placeholder = contactItem.phone;
+        liElementEditButton.textContent = "Ändra";
+        liElementRemoveButton.textContent = "Radera";
+
+        liElementName.disabled = true;
+        liElementPhone.disabled = true;
+
+        liElement.append(liElementName, liElementPhone, liElementEditButton, liElementRemoveButton);
+
+        console.log("liElement: ", liElement)
+
+        contactULContainer.appendChild(liElement);
+    }
 }
 else {
     contactList = [];
 }
+
+
 
 console.log("contactList: ", contactList);
 
@@ -31,7 +56,7 @@ inputForm.addEventListener('submit', (e) => {
 
     let listItemObject = {
         id: crypto.randomUUID(),
-        name: inputName.value,
+        contactName: inputName.value,
         phone: inputPhone.value,
     }
 
@@ -67,7 +92,7 @@ inputForm.addEventListener('submit', (e) => {
     contactULContainer.appendChild(liElement);
 
     contactList.push(listItemObject);
-    localStorage.setItem('contactList', JSON.stringify(listItemObject));
+    localStorage.setItem('contactList', JSON.stringify(contactList));
 });
 
 
