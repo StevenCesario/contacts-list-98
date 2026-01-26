@@ -3,6 +3,6 @@
     margin: 100px;
 }
 
-input {
-    height: 50px;
+#error-message {
+    color: red;
 }
