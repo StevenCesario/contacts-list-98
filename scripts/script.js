@@ -5,6 +5,16 @@ const inputPhone = document.getElementById('input-phone');
 
 const contactULContainer = document.getElementById('contact-ul-container');
 
+let contactList;
+if (localStorage.getItem('contactList')) {
+    contactList = JSON.parse(localStorage.getItem('contactList'));
+}
+else {
+    contactList = [];
+}
+
+console.log("contactList: ", contactList);
+
 inputForm.addEventListener('submit', (e) => {
     e.preventDefault();
     console.log('Form submitted!')
