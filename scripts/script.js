@@ -1,5 +1,5 @@
 const inputForm = document.getElementById('input-form');
-console.log("inputForm:", inputForm)
+// console.log("inputForm:", inputForm)
 const inputName = document.getElementById('input-name');
 const inputPhone = document.getElementById('input-phone');
 
@@ -9,13 +9,40 @@ let contactList;
 if (localStorage.getItem('contactList')) {
     contactList = JSON.parse(localStorage.getItem('contactList'));
     console.log("contactList: ", contactList);
+    for (let [index, contactObject] of contactList.entries()) {
+        console.log(`index: ${index}, contactObject: `, contactObject);
+    }
+
     for (let contactItem of contactList) {
-        console.log("contactItem: ", contactItem);
+        console.log("current contactItem: ", contactItem);
         let liElement = document.createElement('li');
         let liElementName = document.createElement('input');
         let liElementPhone = document.createElement('input');
         let liElementEditButton = document.createElement('button');
         let liElementRemoveButton = document.createElement('button');
+
+        liElementRemoveButton.addEventListener('click', (e) => {
+            console.log("Remove button clicked!")
+
+            // *Ta bort från localStorage*
+
+            // 1. Radera ska inte ta bort hela contactList utan endast uppdatera arrayen och ta bort det specifika objektet!
+            for (let [index, contactObject] of contactList.entries()) {
+                console.log(`index: ${index}, contactObject: `, contactObject);
+                // Hitta objektet i contactList
+                if (contactObject.id === contactItem.id) {
+                    // Ta bort object från contactList Array på index
+                    // "At position index, remove 1 item"
+                    contactList.splice(index, 1);
+                }
+            }
+
+            // 2. Skriv över localStorage med vår nya state!
+            localStorage.setItem('contactList', JSON.stringify(contactList));
+
+            // *Ta bort visuellt*
+            e.target.parentNode.remove(); 
+        })
 
         liElementName.placeholder = contactItem.contactName;
         liElementPhone.placeholder = contactItem.phone;
@@ -27,7 +54,7 @@ if (localStorage.getItem('contactList')) {
 
         liElement.append(liElementName, liElementPhone, liElementEditButton, liElementRemoveButton);
 
-        console.log("liElement: ", liElement)
+        // console.log("liElement: ", liElement)
 
         contactULContainer.appendChild(liElement);
     }
@@ -38,9 +65,9 @@ else {
 
 
 
-console.log("contactList: ", contactList);
+// console.log("contactList: ", contactList);
 
-console.log("crypto.randomUUID(): ", crypto.randomUUID());
+// console.log("crypto.randomUUID(): ", crypto.randomUUID());
 
 inputForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -54,8 +81,9 @@ inputForm.addEventListener('submit', (e) => {
     let liElementEditButton = document.createElement('button');
     let liElementRemoveButton = document.createElement('button');
 
+    const contactID = crypto.randomUUID();
     let listItemObject = {
-        id: crypto.randomUUID(),
+        id: contactID,
         contactName: inputName.value,
         phone: inputPhone.value,
     }
@@ -84,7 +112,26 @@ inputForm.addEventListener('submit', (e) => {
     // })
 
     liElementRemoveButton.addEventListener('click', (e) => {
-        e.target.parentNode.remove();
+        console.log("Remove button clicked!")
+
+        // *Ta bort från localStorage*
+
+        // 1. Radera ska inte ta bort hela contactList utan endast uppdatera arrayen och ta bort det specifika objektet!
+        for (let [index, contactObject] of contactList.entries()) {
+            console.log(`index: ${index}, contactObject: `, contactObject);
+            // Hitta objektet i contactList
+            if (contactObject.id === contactID) {
+                // Ta bort object från contactList Array på index
+                // "At position index, remove 1 item"
+                contactList.splice(index, 1);
+            }
+        }
+
+        // 2. Skriv över localStorage med vår nya state!
+        localStorage.setItem('contactList', JSON.stringify(contactList));
+
+        // *Ta bort visuellt*
+        e.target.parentNode.remove(); 
     })
 
     liElement.append(liElementName, liElementPhone, liElementEditButton, liElementRemoveButton);
@@ -101,4 +148,5 @@ inputForm.addEventListener('submit', (e) => {
  * TODO:
  * Fix the EventListener on the "Ändra knapp"
  * localStorage implementation
+ * input Validation!
  */
