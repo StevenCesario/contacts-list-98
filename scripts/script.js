@@ -15,6 +15,8 @@ else {
 
 console.log("contactList: ", contactList);
 
+console.log("crypto.randomUUID(): ", crypto.randomUUID());
+
 inputForm.addEventListener('submit', (e) => {
     e.preventDefault();
     console.log('Form submitted!')
@@ -26,6 +28,12 @@ inputForm.addEventListener('submit', (e) => {
     let liElementPhone = document.createElement('input');
     let liElementEditButton = document.createElement('button');
     let liElementRemoveButton = document.createElement('button');
+
+    let listItemObject = {
+        id: crypto.randomUUID(),
+        name: inputName.value,
+        phone: inputPhone.value,
+    }
 
     liElementName.placeholder = inputName.value;
     liElementPhone.placeholder = inputPhone.value;
@@ -57,7 +65,12 @@ inputForm.addEventListener('submit', (e) => {
     liElement.append(liElementName, liElementPhone, liElementEditButton, liElementRemoveButton);
 
     contactULContainer.appendChild(liElement);
+
+    contactList.push(listItemObject);
+    localStorage.setItem('contactList', JSON.stringify(listItemObject));
 });
+
+
 
 /**
  * TODO:
