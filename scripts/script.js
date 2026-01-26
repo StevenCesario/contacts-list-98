@@ -21,6 +21,30 @@ if (localStorage.getItem('contactList')) {
         let liElementEditButton = document.createElement('button');
         let liElementRemoveButton = document.createElement('button');
 
+        liElementEditButton.addEventListener('click', (e) => {
+            // e.target är knappen!! Inte the input forms!
+            console.log("Ändra knapp pressed!")
+            console.log("e.target: ", e.target);
+            console.log("e.target.parentNode: ", e.target.parentNode);
+
+            const inputNameField = e.target.parentNode.children[0];
+            console.log("inputNameField: ", inputNameField);
+            const inputPhoneField = e.target.parentNode.children[1];
+            if (inputNameField.disabled == true) {
+                inputNameField.disabled = false;
+                inputPhoneField.disabled = false;
+            }
+            else {
+                e.target.disabled = true;
+            }
+            if (e.target.textContent === "Ändra") {
+                e.target.textContent = "Spara";
+            }
+            else {
+                e.target.textContent = "Ändra";
+            }
+        })
+
         liElementRemoveButton.addEventListener('click', (e) => {
             console.log("Remove button clicked!")
 
@@ -147,6 +171,10 @@ inputForm.addEventListener('submit', (e) => {
 /**
  * TODO:
  * Fix the EventListener on the "Ändra knapp"
- * localStorage implementation
+ * localStorage implementation PARTIALLY DONE
  * input Validation!
+ * Radera lista button
+ * Get editing working
+ * Make sure we can't add empty names or phone numbers
+ * 
  */
