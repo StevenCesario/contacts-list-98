@@ -25,7 +25,27 @@ inputForm.addEventListener('submit', (e) => {
     liElementName.disabled = true;
     liElementPhone.disabled = true;
 
+    liElementEditButton.addEventListener('click', (e) => {
+        if (e.target.disabled == true) {
+            e.target.disabled = false;
+        }
+        else {
+            e.target.disabled = true;
+        }
+        if (e.target.textContent === "Ändra") {
+            e.target.textContent = "Spara";
+        }
+        else {
+            e.target.textContent = "Ändra";
+        }
+    })
+
     liElement.append(liElementName, liElementPhone, liElementEditButton, liElementRemoveButton);
 
     contactULContainer.appendChild(liElement);
 });
+
+/**
+ * TODO:
+ * Fix the EventListener on the "Ändra knapp"
+ */
