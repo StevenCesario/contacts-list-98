@@ -25,19 +25,23 @@ inputForm.addEventListener('submit', (e) => {
     liElementName.disabled = true;
     liElementPhone.disabled = true;
 
-    liElementEditButton.addEventListener('click', (e) => {
-        if (e.target.disabled == true) {
-            e.target.disabled = false;
-        }
-        else {
-            e.target.disabled = true;
-        }
-        if (e.target.textContent === "Ändra") {
-            e.target.textContent = "Spara";
-        }
-        else {
-            e.target.textContent = "Ändra";
-        }
+    // liElementEditButton.addEventListener('click', (e) => {
+    //     if (e.target.disabled == true) {
+    //         e.target.disabled = false;
+    //     }
+    //     else {
+    //         e.target.disabled = true;
+    //     }
+    //     if (e.target.textContent === "Ändra") {
+    //         e.target.textContent = "Spara";
+    //     }
+    //     else {
+    //         e.target.textContent = "Ändra";
+    //     }
+    // })
+
+    liElementRemoveButton.addEventListener('click', (e) => {
+        e.target.parentNode.remove();
     })
 
     liElement.append(liElementName, liElementPhone, liElementEditButton, liElementRemoveButton);
@@ -48,4 +52,5 @@ inputForm.addEventListener('submit', (e) => {
 /**
  * TODO:
  * Fix the EventListener on the "Ändra knapp"
+ * localStorage implementation
  */
