@@ -35,7 +35,11 @@ if (localStorage.getItem('contactList')) {
                 inputPhoneField.disabled = false;
             }
             else {
-                e.target.disabled = true;
+                inputNameField.disabled = true;
+                inputPhoneField.disabled = true;
+                if (inputNameField.length > 0) inputNameField.placeholder = inputNameField.value;
+                if (inputPhoneField.length > 0) inputPhoneField.placeholder = inputPhoneField.value;
+                
             }
             if (e.target.textContent === "Ändra") {
                 e.target.textContent = "Spara";
@@ -176,5 +180,5 @@ inputForm.addEventListener('submit', (e) => {
  * Radera lista button
  * Get editing working
  * Make sure we can't add empty names or phone numbers
- * 
+ * Make editbutton interact med localStorage
  */
