@@ -211,6 +211,24 @@ createContactButton.addEventListener('click', (e) => {
     localStorage.setItem('contactList', JSON.stringify(contactList));
 });
 
+deleteListButton.addEventListener('click', (e) => {
+    // Det är bara att ta bort alla Object entries i contactList och sen skriva över och synka med localStorage?
+    // for (let [index, contactObject] of contactList.entries()) {
+    //     console.log(`index: ${index}, contactObject: `, contactObject);
+    //     // Hitta objektet i contactList
+    //     if (contactObject.id === contactItem.id) {
+    //         // Ta bort object från contactList Array på index
+    //         // "At position index, remove 1 item"
+    //         contactList.splice(index, 1);
+    //     }
+    // }
+    // Vi kan bara sätta length till 0 för att empty the array?
+    e.preventDefault();
+    contactList.length = 0;
+    localStorage.setItem('contactList', JSON.stringify(contactList));
+    location.reload();
+    // Alright!! Det här är en lösning! Hör med de andra i klassen ifall detta klassas som Dark Arts och är rekommenderat
+})
 
 
 /**
