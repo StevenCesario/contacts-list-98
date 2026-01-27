@@ -144,7 +144,14 @@ createContactButton.addEventListener('click', (e) => {
         e.target.parentNode.remove(); 
     })
     
-    liElement.append(liElementName, liElementPhone, liElementEditButton, liElementRemoveButton);
+    // The first one is purely for CSS
+    liElement.append(
+        Object.assign(document.createElement('span'), { textContent: '•' }), 
+        liElementName, 
+        liElementPhone, 
+        liElementEditButton, 
+        liElementRemoveButton
+    );
     
     contactULContainer.appendChild(liElement);
 
@@ -181,4 +188,5 @@ deleteListButton.addEventListener('click', (e) => {
  * Array methods för att optimera koden? contains?
  * Refactor och funktionen för att uppdatera contact. Still thinking and struggling with this one
  * Ny bug? Fixa Ändra/Spara knapp
+ * Prevent: "Telefonnummer kan inte innehålla bokstäver"
  */

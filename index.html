@@ -6,23 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kunskapskontroll 2 - Kontaktlista Applikation</title>
     <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/98.css" />
     <script src="./scripts/script.js" defer></script>
 </head>
 
 <body>
-    <form action="submit" id="input-form">
-        <input type="text" placeholder="Namn" id="input-name">
-        <input type="text" placeholder="Telefon" id="input-phone">
-        <button id="create-contact-button">Skapa</button>
-        <button id="delete-list-button">Radera lista</button>
-    </form>
-    <span id="error-message" hidden></span>
-    <h1>Kontaktlista</h1>
-    <div id="contact-container">
-        <ul id="contact-ul-container">
+    <div class="window" style="margin: 32px; width: 250px">
+        <div class="title-bar">
+        <div class="title-bar-text">
+            Kontaktlista
+        </div>
+        </div>
+        <div class="window-body">
+            <form action="submit" id="input-form">
+                <input type="text" placeholder="Namn" id="input-name">
+                <input type="text" placeholder="Telefon" id="input-phone">
+                <button id="create-contact-button">Skapa</button>
+                <button id="delete-list-button">Radera lista</button>
+            </form>
+            <span id="error-message" hidden></span>
+            <div id="contact-container">
+                <ul id="contact-ul-container">
 
-        </ul>
-    </div>
+                </ul>
+            </div>
+        </div>
+  </div>
 </body>
 
 </html>

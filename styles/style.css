@@ -3,6 +3,23 @@
     margin: 100px;
 }
 
+body {
+    background-color: #0E7173;
+    display: flex;
+    justify-content: center;
+}
+
 #error-message {
     color: red;
+}
+
+.window {
+    min-width: 600px;
+    min-height: 400px;
+}
+
+#input-form, li {
+    display: flex;
+    gap: 8px;
+    align-items: center;
 }
