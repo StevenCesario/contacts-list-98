@@ -2,7 +2,10 @@ const inputForm = document.getElementById('input-form');
 const inputName = document.getElementById('input-name');
 const inputPhone = document.getElementById('input-phone');
 const contactULContainer = document.getElementById('contact-ul-container');
-const errorMessage = document.getElementById('error-message');
+const errorMessageContainer = document.getElementById('error-message');
+
+const errorMessageCreate = "Får ej skapa tom kontakt";
+const errorMessageEdit = "Får ej spara tom kontakt";
 
 let contactList;
 if (localStorage.getItem('contactList')) {
@@ -34,17 +37,19 @@ if (localStorage.getItem('contactList')) {
                 inputPhoneField.disabled = false;
             }
             else {
+                // Sätt empty field valiation här och ta bort if (inputNameField.value.length > 0) { längre ner
+                if (inputNameField.value.length === 0 || inputPhoneField.value.length === 0) {
+                    errorMessageContainer.hidden = false; // Nu blir det 1. Visa
+                    errorMessageContainer.textContent = errorMessageEdit; // 2. Sätt text
+                    return
+                }
+
+                errorMessageContainer.hidden = true;
+
                 inputNameField.disabled = true;
                 inputPhoneField.disabled = true;
-                if (inputNameField.value.length > 0) { //value.length!
-                    console.log("Vi är inne i if block!");
-                    // inputNameField.placeholder = "TEST!"; //inputNameField.value; Denna.. behövs inte?
-                    updateContactListEntry(contactItem.id, "name", inputNameField.value)
-                }
-                if (inputPhoneField.value.length > 0) {
-                    inputPhoneField.placeholder = inputPhoneField.value;
-                    updateContactListEntry(contactItem.id, "phone", inputPhoneField.value)
-                }
+                updateContactListEntry(contactItem.id, "name", inputNameField.value);
+                updateContactListEntry(contactItem.id, "phone", inputPhoneField.value);
                 // Skriv över contactList i localStorage!!! Lätt att glömma!
                 localStorage.setItem('contactList', JSON.stringify(contactList));
             }
@@ -60,7 +65,6 @@ if (localStorage.getItem('contactList')) {
             console.log("Remove button clicked!")
 
             // *Ta bort från localStorage*
-
             // 1. Radera ska inte ta bort hela contactList utan endast uppdatera arrayen och ta bort det specifika objektet!
             for (let [index, contactObject] of contactList.entries()) {
                 console.log(`index: ${index}, contactObject: `, contactObject);
@@ -126,12 +130,13 @@ inputForm.addEventListener('submit', (e) => {
 
     // Vi ska inte kunna skapa nya entries om någon av the input fields är tomma
     if (inputName.value.length === 0 || inputPhone.value.length === 0) {
-        errorMessage.hidden = false;
+        errorMessageContainer.hidden = false; // Nu blir det 1. Visa
+        errorMessageContainer.textContent = errorMessageCreate; // 2. Sätt text
         return
     }
 
-    // Om koden når hit har vi en valid entry. Sätt errorMessage.hidden tillbaka till true
-    errorMessage.hidden = true;
+    // Om koden når hit har vi en valid entry. Sätt errorMessageContainer.hidden tillbaka till true
+    errorMessageContainer.hidden = true;
 
     console.log('Form submitted!')
     console.log(`inputName: ${inputName.value}`);
@@ -217,4 +222,5 @@ inputForm.addEventListener('submit', (e) => {
  * Make edit button interact med localStorage DONE
  * updateContactListEntry med en bool för att ge möjlighet att remove entry eller separat funktion för att ta bort entry?
  * Gör om alla if/else till ternary operator för att öva och bli comfortable
+ * Synka ALLT som är utanför Skapa eventListener pch utanför med funktioner when possible
  */
