@@ -1,6 +1,8 @@
 const inputForm = document.getElementById('input-form');
 const inputName = document.getElementById('input-name');
 const inputPhone = document.getElementById('input-phone');
+const createContactButton = document.getElementById('create-contact-button');
+const deleteListButton = document.getElementById('delete-list-button');
 const contactULContainer = document.getElementById('contact-ul-container');
 const errorMessageContainer = document.getElementById('error-message');
 
@@ -125,7 +127,7 @@ function updateContactListEntry(contactId, nameOrPhone, newValue) {
 
 // console.log("crypto.randomUUID(): ", crypto.randomUUID());
 
-inputForm.addEventListener('submit', (e) => {
+createContactButton.addEventListener('click', (e) => {
     e.preventDefault();
 
     // Vi ska inte kunna skapa nya entries om någon av the input fields är tomma
@@ -214,9 +216,9 @@ inputForm.addEventListener('submit', (e) => {
 /**
  * TODO:
  * Fix the EventListener on the "Ändra knapp"
- * localStorage implementation PARTIALLY DONE
- * input Validation!
- * Radera lista button
+ * localStorage implementation DONE
+ * input Validation! DONE
+ * Radera lista button TO BE DONE
  * Get editing working DONE
  * Make sure we can't add empty names or phone numbers DONE
  * Make edit button interact med localStorage DONE
