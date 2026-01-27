@@ -51,14 +51,8 @@ if (localStorage.getItem('contactList')) {
         })
 
         liElementRemoveButton.addEventListener('click', (e) => {
-            for (let [index, contactObject] of contactList.entries()) {
-                if (contactObject.id === contactItem.id) {
-                    contactList.splice(index, 1);
-                }
-            }
-
+            deleteSingleContactListEntry(contactItem.id);
             localStorage.setItem('contactList', JSON.stringify(contactList));
-
             e.target.parentNode.remove(); 
         })
 
@@ -84,6 +78,14 @@ function updateContactListEntry(contactId, nameOrPhone, newValue) {
             nameOrPhone === "name"
                 ? contactObject.contactName = newValue
                 : contactObject.phone = newValue;
+        }
+    }
+}
+
+function deleteSingleContactListEntry(contactId) {
+    for (let [index, contactObject] of contactList.entries()) {
+        if (contactObject.id === contactId) {
+            contactList.splice(index, 1);
         }
     }
 }
@@ -136,15 +138,9 @@ createContactButton.addEventListener('click', (e) => {
         //     }
         // })
         
-        liElementRemoveButton.addEventListener('click', (e) => {
-            for (let [index, contactObject] of contactList.entries()) {
-                if (contactObject.id === contactID) {
-                    contactList.splice(index, 1);
-                }
-            }
-
+    liElementRemoveButton.addEventListener('click', (e) => {
+        deleteSingleContactListEntry(contactID);
         localStorage.setItem('contactList', JSON.stringify(contactList));
-
         e.target.parentNode.remove(); 
     })
     
@@ -180,5 +176,6 @@ deleteListButton.addEventListener('click', (e) => {
  * Gör om alla if/else till ternary operator för att öva och bli comfortable
  * Synka ALLT som är utanför Skapa eventListener pch utanför med funktioner when possible
  * Implementera så att forms töms efter varje kontakt man lägger till DONE
- * Kör en location.reload() varje gång vi skapar en ny kontakt?
+ * Kör en location.reload() varje gång vi skapar en ny kontakt? Vilket skulle ta bort dessa: e.target.parentNode.remove(); 
+ * Är det okej att referera till och läsa contactList som en global variabel i detta scenario?
  */
