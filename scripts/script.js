@@ -1,8 +1,6 @@
 const inputForm = document.getElementById('input-form');
-// console.log("inputForm:", inputForm)
 const inputName = document.getElementById('input-name');
 const inputPhone = document.getElementById('input-phone');
-
 const contactULContainer = document.getElementById('contact-ul-container');
 
 let contactList;
@@ -37,9 +35,17 @@ if (localStorage.getItem('contactList')) {
             else {
                 inputNameField.disabled = true;
                 inputPhoneField.disabled = true;
-                if (inputNameField.length > 0) inputNameField.placeholder = inputNameField.value;
-                if (inputPhoneField.length > 0) inputPhoneField.placeholder = inputPhoneField.value;
-                
+                if (inputNameField.value.length > 0) { //value.length!
+                    console.log("Vi är inne i if block!");
+                    // inputNameField.placeholder = "TEST!"; //inputNameField.value; Denna.. behövs inte?
+                    updateContactListEntry(contactItem.id, "name", inputNameField.value)
+                }
+                if (inputPhoneField.value.length > 0) {
+                    inputPhoneField.placeholder = inputPhoneField.value;
+                    updateContactListEntry(contactItem.id, "phone", inputPhoneField.value)
+                }
+                // Skriv över contactList i localStorage!!! Lätt att glömma!
+                localStorage.setItem('contactList', JSON.stringify(contactList));
             }
             if (e.target.textContent === "Ändra") {
                 e.target.textContent = "Spara";
@@ -91,6 +97,23 @@ else {
     contactList = [];
 }
 
+// Loopar igenom contactList på samma sätt vi gjorde när vi tog bort en entry.
+// Kan säkert skrivas om för att ta bort oxå. Mycket refactoring to be done!
+function updateContactListEntry(contactId, nameOrPhone, newValue) {
+    console.log("Vi kallar på updateContactListEntry!")
+    console.log(`contactId: ${contactId}, nameOrPhone: ${nameOrPhone}, newValue: ${newValue}`);
+    for (let [index, contactObject] of contactList.entries()) { // index kanske inte behövs. Update as needed
+        if (contactObject.id === contactId) {
+            // Uppdaterar vi name eller phone?
+            if (nameOrPhone === "name") {
+                contactObject.contactName = newValue;
+            }
+            else {
+                contactObject.phone = newValue;
+            }
+        }
+    }
+}
 
 
 // console.log("contactList: ", contactList);
@@ -181,4 +204,6 @@ inputForm.addEventListener('submit', (e) => {
  * Get editing working
  * Make sure we can't add empty names or phone numbers
  * Make editbutton interact med localStorage
+ * updateContactListEntry med en bool för att ge möjlighet att remove entry eller separat funktion för att ta bort entry?
+ * Gör om alla if/else till ternary operator för att öva och bli comfortable
  */
