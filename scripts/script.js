@@ -37,14 +37,24 @@ if (localStorage.getItem('contactList')) {
                 }
 
                 errorMessageContainer.hidden = true;
-
                 newContactNameField.disabled = true;
                 newContactPhoneField.disabled = true;
-                updateContactListEntry(contactItem.id, "name", newContactNameField.value);
-                updateContactListEntry(contactItem.id, "phone", newContactPhoneField.value);
+
+                for (let contactObject of contactList) {
+                    if (contactObject.id === contactId) {
+                        if (contactItem.contactName != newContactNameField.value) {
+                            newContactNameField.placeholder = newContactNameField.value;
+                        }
+                        if (contactItem.phone != newContactPhoneField.value) {
+                            newContactPhoneField.placeholder = newContactPhoneField.value;
+                        }
+                    }
+                }
+
                 localStorage.setItem('contactList', JSON.stringify(contactList));
             }
 
+            // TODO: Bug här all of a sudden?
             e.target.textContent === "Ändra"
                 ? e.target.textContent = "Spara"
                 : e.target.textContent = "Ändra";
@@ -70,16 +80,6 @@ if (localStorage.getItem('contactList')) {
 }
 else {
     contactList = [];
-}
-
-function updateContactListEntry(contactId, nameOrPhone, newValue) {
-    for (let contactObject of contactList) {
-        if (contactObject.id === contactId) {
-            nameOrPhone === "name"
-                ? contactObject.contactName = newValue
-                : contactObject.phone = newValue;
-        }
-    }
 }
 
 function deleteSingleContactListEntry(contactId) {
@@ -178,4 +178,7 @@ deleteListButton.addEventListener('click', (e) => {
  * Implementera så att forms töms efter varje kontakt man lägger till DONE
  * Kör en location.reload() varje gång vi skapar en ny kontakt? Vilket skulle ta bort dessa: e.target.parentNode.remove(); 
  * Är det okej att referera till och läsa contactList som en global variabel i detta scenario?
+ * Array methods för att optimera koden? contains?
+ * Refactor och funktionen för att uppdatera contact. Still thinking and struggling with this one
+ * Ny bug? Fixa Ändra/Spara knapp
  */
