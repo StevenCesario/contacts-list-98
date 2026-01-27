@@ -2,6 +2,7 @@ const inputForm = document.getElementById('input-form');
 const inputName = document.getElementById('input-name');
 const inputPhone = document.getElementById('input-phone');
 const contactULContainer = document.getElementById('contact-ul-container');
+const errorMessage = document.getElementById('error-message');
 
 let contactList;
 if (localStorage.getItem('contactList')) {
@@ -122,6 +123,16 @@ function updateContactListEntry(contactId, nameOrPhone, newValue) {
 
 inputForm.addEventListener('submit', (e) => {
     e.preventDefault();
+
+    // Vi ska inte kunna skapa nya entries om någon av the input fields är tomma
+    if (inputName.value.length === 0 || inputPhone.value.length === 0) {
+        errorMessage.hidden = false;
+        return
+    }
+
+    // Om koden når hit har vi en valid entry. Sätt errorMessage.hidden tillbaka till true
+    errorMessage.hidden = true;
+
     console.log('Form submitted!')
     console.log(`inputName: ${inputName.value}`);
     console.log(`inputPhone: ${inputPhone.value}`);
@@ -201,9 +212,9 @@ inputForm.addEventListener('submit', (e) => {
  * localStorage implementation PARTIALLY DONE
  * input Validation!
  * Radera lista button
- * Get editing working
- * Make sure we can't add empty names or phone numbers
- * Make editbutton interact med localStorage
+ * Get editing working DONE
+ * Make sure we can't add empty names or phone numbers DONE
+ * Make edit button interact med localStorage DONE
  * updateContactListEntry med en bool för att ge möjlighet att remove entry eller separat funktion för att ta bort entry?
  * Gör om alla if/else till ternary operator för att öva och bli comfortable
  */
