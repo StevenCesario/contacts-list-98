@@ -139,11 +139,11 @@ createContactButton.addEventListener('click', (e) => {
 
     // Om koden når hit har vi en valid entry. Sätt errorMessageContainer.hidden tillbaka till true
     errorMessageContainer.hidden = true;
-
+    
     console.log('Form submitted!')
     console.log(`inputName: ${inputName.value}`);
     console.log(`inputPhone: ${inputPhone.value}`);
-
+    
     let liElement = document.createElement('li');
     let liElementName = document.createElement('input');
     let liElementPhone = document.createElement('input');
@@ -176,25 +176,25 @@ createContactButton.addEventListener('click', (e) => {
     //         e.target.textContent = "Spara";
     //     }
     //     else {
-    //         e.target.textContent = "Ändra";
-    //     }
-    // })
-
-    liElementRemoveButton.addEventListener('click', (e) => {
-        console.log("Remove button clicked!")
-
-        // *Ta bort från localStorage*
-
-        // 1. Radera ska inte ta bort hela contactList utan endast uppdatera arrayen och ta bort det specifika objektet!
-        for (let [index, contactObject] of contactList.entries()) {
-            console.log(`index: ${index}, contactObject: `, contactObject);
-            // Hitta objektet i contactList
-            if (contactObject.id === contactID) {
-                // Ta bort object från contactList Array på index
-                // "At position index, remove 1 item"
-                contactList.splice(index, 1);
+        //         e.target.textContent = "Ändra";
+        //     }
+        // })
+        
+        liElementRemoveButton.addEventListener('click', (e) => {
+            console.log("Remove button clicked!")
+            
+            // *Ta bort från localStorage*
+            
+            // 1. Radera ska inte ta bort hela contactList utan endast uppdatera arrayen och ta bort det specifika objektet!
+            for (let [index, contactObject] of contactList.entries()) {
+                console.log(`index: ${index}, contactObject: `, contactObject);
+                // Hitta objektet i contactList
+                if (contactObject.id === contactID) {
+                    // Ta bort object från contactList Array på index
+                    // "At position index, remove 1 item"
+                    contactList.splice(index, 1);
+                }
             }
-        }
 
         // 2. Skriv över localStorage med vår nya state!
         localStorage.setItem('contactList', JSON.stringify(contactList));
@@ -202,13 +202,17 @@ createContactButton.addEventListener('click', (e) => {
         // *Ta bort visuellt*
         e.target.parentNode.remove(); 
     })
-
+    
     liElement.append(liElementName, liElementPhone, liElementEditButton, liElementRemoveButton);
-
+    
     contactULContainer.appendChild(liElement);
 
     contactList.push(listItemObject);
     localStorage.setItem('contactList', JSON.stringify(contactList));
+
+    // Töm våra två input fields också
+    inputName.value = "";
+    inputPhone.value = "";
 });
 
 deleteListButton.addEventListener('click', (e) => {
@@ -233,14 +237,15 @@ deleteListButton.addEventListener('click', (e) => {
 
 /**
  * TODO:
- * Fix the EventListener on the "Ändra knapp"
+ * Fix the EventListener on the "Ändra knapp" DONE
  * localStorage implementation DONE
  * input Validation! DONE
- * Radera lista button TO BE DONE
+ * Radera lista button DONE
  * Get editing working DONE
  * Make sure we can't add empty names or phone numbers DONE
  * Make edit button interact med localStorage DONE
  * updateContactListEntry med en bool för att ge möjlighet att remove entry eller separat funktion för att ta bort entry?
  * Gör om alla if/else till ternary operator för att öva och bli comfortable
  * Synka ALLT som är utanför Skapa eventListener pch utanför med funktioner when possible
+ * Implementera så att forms töms efter varje kontakt man lägger till
  */
