@@ -30,8 +30,31 @@ const DataStore = {
 
 // This part only cares about taking an array and drawing it.
 const ViewRenderer = {
-    // Implementation to be done
-}
+    render(contacts) {
+        // Wipe the UI
+        contactULContainer.innerHTML = ''; 
+
+        // Map creates an array of strings; Join turns this array into one giant string
+        const html = contacts.map(c => this.createHTML(c)).join(''); 
+
+        // One single DOM "Paint" operation
+        contactULContainer.insertAdjacentHTML('afterbegin', html);
+    },
+
+    createHTML(contact) {
+        // We add data-id="${contact.id}" so the parent knows WHICH contact was clicked. 
+        // It's our pointer back to the DataStore
+        return `
+            <li data-id="${contact.id}">
+                <span>•</span>
+                <input value="${contact.contactName}" disabled>
+                <input value="${contact.contactTel}" disabled>
+                <button class="edit-btn">Ändra</button>
+                <button class="delete-btn">Radera</button>
+            </li>
+        `;
+    }
+};
 
 let contactList;
 if (localStorage.getItem('contactList')) {
