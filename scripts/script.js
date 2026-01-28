@@ -9,6 +9,16 @@ const errorMessageContainer = document.getElementById('error-message');
 const errorMessageCreate = "Får ej skapa tom kontakt";
 const errorMessageEdit = "Får ej spara tom kontakt";
 
+// This part only cares about `contactList` and `localStorage`.
+const Store = {
+    // Implementation to be done
+}
+
+// This part only cares about taking an array and drawing it.
+const View = {
+    // Implementation to be done
+}
+
 let contactList;
 if (localStorage.getItem('contactList')) {
     contactList = JSON.parse(localStorage.getItem('contactList'));
