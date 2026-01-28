@@ -10,12 +10,26 @@ const errorMessageCreate = "Får ej skapa tom kontakt";
 const errorMessageEdit = "Får ej spara tom kontakt";
 
 // This part only cares about `contactList` and `localStorage`.
-const Store = {
-    // Implementation to be done
-}
+const DataStore = {
+    getContacts() {
+        return JSON.parse(localStorage.getItem('contactList')) || [];
+    },
+
+    saveContacts(inputList) {
+        localStorage.setItem('contactList', JSON.stringify(inputList));
+    },
+
+    addContact(contactName, contactTel) {
+        const contactList = this.getContacts();
+        contactList.push({ id: crypto.randomUUID(), contactName: contactName, contactTel: contactTel });
+        
+        this.saveContacts(contactList);
+        return contactList;
+    }
+};
 
 // This part only cares about taking an array and drawing it.
-const View = {
+const ViewRenderer = {
     // Implementation to be done
 }
 
