@@ -116,11 +116,15 @@ const ViewRenderer = {
 createContactButton.addEventListener('click', (e) => {
     e.preventDefault();
 
-    if (!inputFormName.value || !inputFormTel.value) {
+    // Use our new Validator
+    const error = Validator.validateInput(inputFormName.value, inputFormTel.value);
+
+    if (error) {
         errorMessageContainer.hidden = false;
-        errorMessageContainer.textContent = errorMessageCreate;
+        errorMessageContainer.textContent = error;
         return
     }
+    errorMessageContainer.hidden = true;
 
     // Update DataStore with the new contact
     const newContactList = DataStore.addContact(inputFormName.value, inputFormTel.value);
