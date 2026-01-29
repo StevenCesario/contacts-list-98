@@ -1,22 +1,21 @@
-const inputForm = document.getElementById('input-form'); // TODO: Är denna verkligen nödvändig längre?
-const inputName = document.getElementById('input-name');
-const inputPhone = document.getElementById('input-phone');
+const inputFormName = document.getElementById('input-name');
+const inputFormTel = document.getElementById('input-phone');
 const createContactButton = document.getElementById('create-contact-button');
 const deleteListButton = document.getElementById('delete-list-button');
 const contactULContainer = document.getElementById('contact-ul-container');
-const errorMessageContainer = document.getElementById('error-message');
 
+const errorMessageContainer = document.getElementById('error-message');
 const errorMessageCreate = "Får ej skapa tom kontakt";
 const errorMessageEdit = "Får ej spara tom kontakt";
 
 // This part only cares about `contactList` and `localStorage`.
 const DataStore = {
     getContacts() {
-        return JSON.parse(localStorage.getItem('contactList')) || [];
+        return JSON.parse(localStorage.getItem('contactData')) || [];
     },
 
     saveContacts(inputList) {
-        localStorage.setItem('contactList', JSON.stringify(inputList));
+        localStorage.setItem('contactData', JSON.stringify(inputList));
     },
 
     addContact(contactName, contactTel) {
@@ -71,7 +70,23 @@ const ViewRenderer = {
 // The Orchestrators! Our two Event Listeners
 // A. The "Add" Listener
 createContactButton.addEventListener('click', (e) => {
-    // To be implemented
+    e.preventDefault();
+
+    if (!inputFormName.value || !inputFormTel.value) {
+        errorMessageContainer.hidden = false;
+        errorMessageContainer.textContent = errorMessageCreate;
+        return
+    }
+
+    // 1. Update data
+    const newContactList = DataStore.addContact(inputFormName.value, inputFormTel.value);
+
+    // 2. Update view
+    ViewRenderer.render(newContactList);
+
+    // 3. Reset inputs
+    inputFormName.value = '';
+    inputFormTel.value = '';
 })
 
 // B. The "Master" Listener (Event delegation to be implemented here)
@@ -84,8 +99,8 @@ const initialContacts = DataStore.getContacts();
 ViewRenderer.render(initialContacts);
 
 let contactList;
-if (localStorage.getItem('contactList')) {
-    contactList = JSON.parse(localStorage.getItem('contactList'));
+if (localStorage.getItem('contactData')) {
+    contactList = JSON.parse(localStorage.getItem('contactData'));
 
     for (let contactItem of contactList) {
         let liElement = document.createElement('li');
@@ -125,7 +140,7 @@ if (localStorage.getItem('contactList')) {
                     }
                 }
 
-                localStorage.setItem('contactList', JSON.stringify(contactList));
+                localStorage.setItem('contactData', JSON.stringify(contactList));
             }
 
             // TODO: Bug här all of a sudden?
@@ -136,7 +151,7 @@ if (localStorage.getItem('contactList')) {
 
         liElementRemoveButton.addEventListener('click', (e) => {
             deleteSingleContactListEntry(contactItem.id);
-            localStorage.setItem('contactList', JSON.stringify(contactList));
+            localStorage.setItem('contactData', JSON.stringify(contactList));
             e.target.parentNode.remove(); 
         })
 
@@ -167,7 +182,7 @@ function deleteSingleContactListEntry(contactId) {
 createContactButton.addEventListener('click', (e) => {
     e.preventDefault();
 
-    if (inputName.value.length === 0 || inputPhone.value.length === 0) {
+    if (inputFormName.value.length === 0 || inputFormTel.value.length === 0) {
         errorMessageContainer.hidden = false;
         errorMessageContainer.textContent = errorMessageCreate;
         return
@@ -185,12 +200,12 @@ createContactButton.addEventListener('click', (e) => {
     const contactID = crypto.randomUUID();
     let listItemObject = {
         id: contactID,
-        contactName: inputName.value,
-        phone: inputPhone.value,
+        contactName: inputFormName.value,
+        phone: inputFormTel.value,
     }
 
-    liElementName.placeholder = inputName.value;
-    liElementPhone.placeholder = inputPhone.value;
+    liElementName.placeholder = inputFormName.value;
+    liElementPhone.placeholder = inputFormTel.value;
     liElementEditButton.textContent = "Ändra";
     liElementRemoveButton.textContent = "Radera";
 
@@ -214,7 +229,7 @@ createContactButton.addEventListener('click', (e) => {
         
     liElementRemoveButton.addEventListener('click', (e) => {
         deleteSingleContactListEntry(contactID);
-        localStorage.setItem('contactList', JSON.stringify(contactList));
+        localStorage.setItem('contactData', JSON.stringify(contactList));
         e.target.parentNode.remove(); 
     })
     
@@ -230,16 +245,16 @@ createContactButton.addEventListener('click', (e) => {
     contactULContainer.appendChild(liElement);
 
     contactList.push(listItemObject);
-    localStorage.setItem('contactList', JSON.stringify(contactList));
+    localStorage.setItem('contactData', JSON.stringify(contactList));
 
-    inputName.value = "";
-    inputPhone.value = "";
+    inputFormName.value = "";
+    inputFormTel.value = "";
 });
 
 deleteListButton.addEventListener('click', (e) => {
     e.preventDefault();
     contactList.length = 0;
-    localStorage.setItem('contactList', JSON.stringify(contactList));
+    localStorage.setItem('contactData', JSON.stringify(contactList));
     location.reload();
 })
 
