@@ -36,6 +36,19 @@ const DataStore = {
 
         this.saveContacts(updatedList);
         return updatedList;
+    },
+
+    updateContact(id, newName, newTel) {
+        const contactList = this.getContacts();
+
+        // Use .map() to create a NEW list (once again; immutability and shallow copy to avoid side effects)
+        const updatedContactList = contactList.map(c =>
+            // Return a new object with updated values if the ID matches; otherwise, return the original contact
+            c.id === id ? { ...c, contactName: newName, contactTel: newTel } : c
+        );
+
+        this.saveContacts(updatedContactList);
+        return updatedContactList;
     }
 };
 
