@@ -168,9 +168,11 @@ contactULContainer.addEventListener('click', (e) => {
             nameInput.focus(); // New neat feature: Set the cursor to be in the newly "unfrozen" text field!
         } else {
             // SAVE CHANGES: Scrape -> Store -> Render
-            if (!nameInput.value || !telInput.value) {
+            const error = Validator.validateInput(nameInput.value, telInput.value);
+
+            if (error) {
                 errorMessageContainer.hidden = false;
-                errorMessageContainer.textContent = errorMessageEdit;
+                errorMessageContainer.textContent = error;
                 return;
             }
             errorMessageContainer.hidden = true;
