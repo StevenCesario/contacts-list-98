@@ -106,18 +106,41 @@ createContactButton.addEventListener('click', (e) => {
 contactULContainer.addEventListener('click', (e) => {
     // We look at e.target to see *what* was clicked
 
-    // Find the parent <li> to get the ID via data-id
+    // Robust contextual identity: Find the parent <li> using .closest()
     const parentListItem = e.target.closest('li');
     if (!parentListItem) return;
-    const id = parentListItem.dataset.id;
+    const id = parentListItem.dataset.id; // Get the ID via data-id
 
+    // DETELE LOGIC
     if (e.target.classList.contains('delete-btn')) {
-        const newContactList = DataStore.removeContact(id);
-        ViewRenderer.render(newContactList);
+        const newContactList = DataStore.removeContact(id); // Update DataStore *first*
+        ViewRenderer.render(newContactList);                // Reflect in the ViewRenderer "Mirror"
     }
 
+    // EDIT/SAVE LOGIC
     if (e.target.classList.contains('edit-btn')) {
-        // To be implemented. Needs a method in DataStore to update contact
+        const nameInput = parentListItem.querySelector('input:nth-child(2)'); // More robust than the previous e.target.parentNode.children[0]
+        const telInput = parentListItem.querySelector('input:nth-child(3)');
+
+        if (nameInput.disabled) {
+            // ENTER EDIT MODE
+            nameInput.disabled = false;
+            telInput.disabled = false;
+            e.target.textContent = "Spara";
+            nameInput.focus(); // New neat feature: Set the cursor to be in the newly "unfrozen" text field!
+        } else {
+            // SAVE CHANGES: Scrape -> Store -> Render
+            if (!nameInput.value || !telInput.value) {
+                errorMessageContainer.hidden = false;
+                errorMessageContainer.textContent = errorMessageEdit;
+                return;
+            }
+            errorMessageContainer.hidden = true;
+
+            // Re-render everything with the new updated contact
+            const newContactList = DataStore.updateContact(id, nameInput.value, telInput.value);
+            ViewRenderer.render(newContactList);
+        }
     }
 })
 
