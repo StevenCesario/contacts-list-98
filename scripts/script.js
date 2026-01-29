@@ -3,10 +3,38 @@ const inputFormTel = document.getElementById('input-phone');
 const createContactButton = document.getElementById('create-contact-button');
 const deleteListButton = document.getElementById('delete-list-button');
 const contactULContainer = document.getElementById('contact-ul-container');
-
 const errorMessageContainer = document.getElementById('error-message');
-const errorMessageCreate = "Får ej skapa tom kontakt";
-const errorMessageEdit = "Får ej spara tom kontakt";
+
+const Validator = {
+    // Rule: At least 2 characters. Only letters (including Swedish ÅÄÖ), spaces, hyphens, and apostrophes.
+    validateName(name) {
+        const nameRegex = /^[a-zA-ZåäöÅÄÖ\s\-']{2,}$/;
+        if (!nameRegex.test(name.trim())) {
+            return "Namnet måste vara minst 2 bokstäver och får inte innehålla siffror.";
+        }
+        return null; // No error
+    },
+
+    // Rule: At least 5 characters. Only digits, spaces, dashes, and plus signs.
+    validatePhone(tel) {
+        const phoneRegex = /^[\d\+\-\s]{5,}$/;
+        if (!phoneRegex.test(tel.trim())) {
+            return "Numret får endast innehålla siffror, bindestreck och plus (minst 5 tecken).";
+        }
+        return null; // No error
+    },
+
+    // A helper to check both at once
+    validateInput(name, tel) {
+        const nameError = this.validateName(name);
+        if (nameError) return nameError;
+
+        const telError = this.validatePhone(tel);
+        if (telError) return telError;
+
+        return null; // Both are valid!
+    }
+};
 
 // This part only cares about `contactData` and `localStorage`.
 const DataStore = {
@@ -85,11 +113,15 @@ const ViewRenderer = {
 createContactButton.addEventListener('click', (e) => {
     e.preventDefault();
 
-    if (!inputFormName.value || !inputFormTel.value) {
+    // Use our new Validator
+    const error = Validator.validateInput(inputFormName.value, inputFormTel.value);
+
+    if (error) {
         errorMessageContainer.hidden = false;
-        errorMessageContainer.textContent = errorMessageCreate;
+        errorMessageContainer.textContent = error;
         return
     }
+    errorMessageContainer.hidden = true;
 
     // Update DataStore with the new contact
     const newContactList = DataStore.addContact(inputFormName.value, inputFormTel.value);
@@ -113,11 +145,8 @@ contactULContainer.addEventListener('click', (e) => {
 
     // DETELE LOGIC
     if (e.target.classList.contains('delete-btn')) {
-        // NEW: Confirm deletion!
-        if (confirm("Är du säker på att du vill radera denna kontakt?")) {
-            const newContactList = DataStore.removeContact(id); // Update DataStore *first*
-            ViewRenderer.render(newContactList);                // Reflect changes in the ViewRenderer "Mirror"
-        }
+        const newContactList = DataStore.removeContact(id); // Update DataStore *first*
+        ViewRenderer.render(newContactList);                // Reflect changes in the ViewRenderer "Mirror"
     }
 
     // EDIT/SAVE LOGIC
@@ -133,9 +162,11 @@ contactULContainer.addEventListener('click', (e) => {
             nameInput.focus(); // New neat feature: Set the cursor to be in the newly "unfrozen" text field!
         } else {
             // SAVE CHANGES: Scrape -> Store -> Render
-            if (!nameInput.value || !telInput.value) {
+            const error = Validator.validateInput(nameInput.value, telInput.value);
+
+            if (error) {
                 errorMessageContainer.hidden = false;
-                errorMessageContainer.textContent = errorMessageEdit;
+                errorMessageContainer.textContent = error;
                 return;
             }
             errorMessageContainer.hidden = true;
@@ -157,7 +188,7 @@ deleteListButton.addEventListener('click', (e) => {
         return;
     }
 
-    // NEW: Confirm deletion
+    // Confirm deletion
     if (confirm("Är du säker på att du vill radera ALLA kontakter? Detta går inte att ångra.")) {
         // Update DataStore with an empty list
         DataStore.saveContacts([]);
