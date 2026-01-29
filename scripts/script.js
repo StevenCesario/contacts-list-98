@@ -113,8 +113,11 @@ contactULContainer.addEventListener('click', (e) => {
 
     // DETELE LOGIC
     if (e.target.classList.contains('delete-btn')) {
-        const newContactList = DataStore.removeContact(id); // Update DataStore *first*
-        ViewRenderer.render(newContactList);                // Reflect changes in the ViewRenderer "Mirror"
+        // NEW: Confirm deletion!
+        if (confirm("Är du säker på att du vill radera denna kontakt?")) {
+            const newContactList = DataStore.removeContact(id); // Update DataStore *first*
+            ViewRenderer.render(newContactList);                // Reflect changes in the ViewRenderer "Mirror"
+        }
     }
 
     // EDIT/SAVE LOGIC
@@ -148,11 +151,20 @@ contactULContainer.addEventListener('click', (e) => {
 deleteListButton.addEventListener('click', (e) => {
     e.preventDefault();
 
-    // Update DataStore with an empty list
-    DataStore.saveContacts([]);
+    // Check if the list is already empty to avoid unnecessary popups
+    if (DataStore.getContacts().length === 0) {
+        alert("Listan är redan tom.");
+        return;
+    }
 
-    // Reflect changes in the ViewRenderer "Mirror"
-    ViewRenderer.render([]);
+    // NEW: Confirm deletion
+    if (confirm("Är du säker på att du vill radera ALLA kontakter? Detta går inte att ångra.")) {
+        // Update DataStore with an empty list
+        DataStore.saveContacts([]);
+
+        // Reflect changes in the ViewRenderer "Mirror"
+        ViewRenderer.render([]);
+    }
 });
 
 // Initiad Load
