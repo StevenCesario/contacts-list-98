@@ -8,7 +8,7 @@ const errorMessageContainer = document.getElementById('error-message');
 const errorMessageCreate = "Får ej skapa tom kontakt";
 const errorMessageEdit = "Får ej spara tom kontakt";
 
-// This part only cares about `contactList` and `localStorage`.
+// This part only cares about `contactData` and `localStorage`.
 const DataStore = {
     getContacts() {
         return JSON.parse(localStorage.getItem('contactData')) || [];
