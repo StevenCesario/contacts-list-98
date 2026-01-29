@@ -8,6 +8,10 @@ const errorMessageContainer = document.getElementById('error-message');
 const errorMessageCreate = "Får ej skapa tom kontakt";
 const errorMessageEdit = "Får ej spara tom kontakt";
 
+const Validator = {
+    // To be implemented
+};
+
 // This part only cares about `contactData` and `localStorage`.
 const DataStore = {
     getContacts() {
