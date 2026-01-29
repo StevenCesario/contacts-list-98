@@ -9,7 +9,34 @@ const errorMessageCreate = "Får ej skapa tom kontakt";
 const errorMessageEdit = "Får ej spara tom kontakt";
 
 const Validator = {
-    // To be implemented
+    // Rule: At least 2 characters. Only letters (including Swedish ÅÄÖ), spaces, hyphens, and apostrophes.
+    validateName(name) {
+        const nameRegex = /^[a-zA-ZåäöÅÄÖ\s\-']{2,}$/;
+        if (!nameRegex.test(name.trim())) {
+            return "Namnet måste vara minst 2 bokstäver och får inte innehålla siffror.";
+        }
+        return null; // No error
+    },
+
+    // Rule: At least 5 characters. Only digits, spaces, dashes, and plus signs.
+    validatePhone(tel) {
+        const phoneRegex = /^[\d\+\-\s]{5,}$/;
+        if (!phoneRegex.test(tel.trim())) {
+            return "Numret får endast innehålla siffror, bindestreck och plus (minst 5 tecken).";
+        }
+        return null; // No error
+    },
+
+    // A helper to check both at once
+    validateInput(name, tel) {
+        const nameError = this.validateName(name);
+        if (nameError) return nameError;
+
+        const telError = this.validatePhone(tel);
+        if (telError) return telError;
+
+        return null; // Both are valid!
+    }
 };
 
 // This part only cares about `contactData` and `localStorage`.
