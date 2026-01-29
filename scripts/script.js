@@ -1,192 +1,160 @@
-const inputForm = document.getElementById('input-form'); // TODO: Är denna verkligen nödvändig längre?
-const inputName = document.getElementById('input-name');
-const inputPhone = document.getElementById('input-phone');
+const inputFormName = document.getElementById('input-name');
+const inputFormTel = document.getElementById('input-phone');
 const createContactButton = document.getElementById('create-contact-button');
 const deleteListButton = document.getElementById('delete-list-button');
 const contactULContainer = document.getElementById('contact-ul-container');
-const errorMessageContainer = document.getElementById('error-message');
 
+const errorMessageContainer = document.getElementById('error-message');
 const errorMessageCreate = "Får ej skapa tom kontakt";
 const errorMessageEdit = "Får ej spara tom kontakt";
 
-let contactList;
-if (localStorage.getItem('contactList')) {
-    contactList = JSON.parse(localStorage.getItem('contactList'));
+// This part only cares about `contactList` and `localStorage`.
+const DataStore = {
+    getContacts() {
+        return JSON.parse(localStorage.getItem('contactData')) || [];
+    },
 
-    for (let contactItem of contactList) {
-        let liElement = document.createElement('li');
-        // TODO: Går det att snygga upp dessa fyra rader i och med att vi upprepar oss med createElement?
-        let liElementName = document.createElement('input');
-        let liElementPhone = document.createElement('input');
-        let liElementEditButton = document.createElement('button');
-        let liElementRemoveButton = document.createElement('button');
+    saveContacts(inputList) {
+        localStorage.setItem('contactData', JSON.stringify(inputList));
+    },
 
-        liElementEditButton.addEventListener('click', (e) => {
-            const newContactNameField = e.target.parentNode.children[0];
-            const newContactPhoneField = e.target.parentNode.children[1];
+    addContact(contactName, contactTel) {
+        const contactList = this.getContacts();
+        contactList.push({ id: crypto.randomUUID(), contactName: contactName, contactTel: contactTel });
+        
+        this.saveContacts(contactList);
+        return contactList;
+    },
 
-            if (newContactNameField.disabled == true) {
-                newContactNameField.disabled = false;
-                newContactPhoneField.disabled = false;
-            }
-            else {
-                if (newContactNameField.value.length === 0 || newContactPhoneField.value.length === 0) {
-                    errorMessageContainer.hidden = false;
-                    errorMessageContainer.textContent = errorMessageEdit;
-                    return
-                }
+    removeContact(id) {
+        const contactList = this.getContacts();
 
-                errorMessageContainer.hidden = true;
-                newContactNameField.disabled = true;
-                newContactPhoneField.disabled = true;
+        // This replaces the for loop + splice combo
+        // Create a brand new array containing only the items that pass this specific condition
+        // It's declarative and non-mutating!
+        const updatedList = contactList.filter(c => c.id !== id);
 
-                for (let contactObject of contactList) {
-                    if (contactObject.id === contactId) {
-                        if (contactItem.contactName != newContactNameField.value) {
-                            newContactNameField.placeholder = newContactNameField.value;
-                        }
-                        if (contactItem.phone != newContactPhoneField.value) {
-                            newContactPhoneField.placeholder = newContactPhoneField.value;
-                        }
-                    }
-                }
+        this.saveContacts(updatedList);
+        return updatedList;
+    },
 
-                localStorage.setItem('contactList', JSON.stringify(contactList));
-            }
+    updateContact(id, newName, newTel) {
+        const contactList = this.getContacts();
 
-            // TODO: Bug här all of a sudden?
-            e.target.textContent === "Ändra"
-                ? e.target.textContent = "Spara"
-                : e.target.textContent = "Ändra";
-        })
+        // Use .map() to create a NEW list (once again; immutability and shallow copy to avoid side effects)
+        const updatedContactList = contactList.map(c =>
+            // Return a new object with updated values if the ID matches; otherwise, return the original contact
+            c.id === id ? { ...c, contactName: newName, contactTel: newTel } : c
+        );
 
-        liElementRemoveButton.addEventListener('click', (e) => {
-            deleteSingleContactListEntry(contactItem.id);
-            localStorage.setItem('contactList', JSON.stringify(contactList));
-            e.target.parentNode.remove(); 
-        })
-
-        liElementName.placeholder = contactItem.contactName;
-        liElementPhone.placeholder = contactItem.phone;
-        liElementEditButton.textContent = "Ändra";
-        liElementRemoveButton.textContent = "Radera";
-
-        liElementName.disabled = true;
-        liElementPhone.disabled = true;
-
-        liElement.append(liElementName, liElementPhone, liElementEditButton, liElementRemoveButton);
-        contactULContainer.appendChild(liElement);
+        this.saveContacts(updatedContactList);
+        return updatedContactList;
     }
-}
-else {
-    contactList = [];
-}
+};
 
-function deleteSingleContactListEntry(contactId) {
-    for (let [index, contactObject] of contactList.entries()) {
-        if (contactObject.id === contactId) {
-            contactList.splice(index, 1);
-        }
+// This part only cares about taking an array and drawing it.
+const ViewRenderer = {
+    render(contacts) {
+        // Wipe the UI
+        contactULContainer.innerHTML = ''; 
+
+        // Map creates an array of strings; Join turns this array into one giant string
+        const html = contacts.map(c => this.createHTML(c)).join(''); 
+
+        // One single DOM "Paint" operation
+        contactULContainer.insertAdjacentHTML('afterbegin', html);
+    },
+
+    createHTML(contact) {
+        // We add data-id="${contact.id}" so the parent knows WHICH contact was clicked. 
+        // It's our pointer back to the DataStore
+        return `
+            <li data-id="${contact.id}">
+                <span>•</span>
+                <input value="${contact.contactName}" disabled>
+                <input value="${contact.contactTel}" disabled>
+                <button class="edit-btn">Ändra</button>
+                <button class="delete-btn">Radera</button>
+            </li>
+        `;
     }
-}
+};
 
+// The Orchestrators! Our Event Listeners
+// A. The "Add" Listener
 createContactButton.addEventListener('click', (e) => {
     e.preventDefault();
 
-    if (inputName.value.length === 0 || inputPhone.value.length === 0) {
+    if (!inputFormName.value || !inputFormTel.value) {
         errorMessageContainer.hidden = false;
         errorMessageContainer.textContent = errorMessageCreate;
         return
     }
 
-    // Om koden når hit har vi en valid entry. Sätt errorMessageContainer.hidden tillbaka till true
-    errorMessageContainer.hidden = true;
-    
-    let liElement = document.createElement('li');
-    let liElementName = document.createElement('input');
-    let liElementPhone = document.createElement('input');
-    let liElementEditButton = document.createElement('button');
-    let liElementRemoveButton = document.createElement('button');
+    // Update DataStore with the new contact
+    const newContactList = DataStore.addContact(inputFormName.value, inputFormTel.value);
 
-    const contactID = crypto.randomUUID();
-    let listItemObject = {
-        id: contactID,
-        contactName: inputName.value,
-        phone: inputPhone.value,
-    }
+    // Reflect changes in the ViewRenderer "Mirror"
+    ViewRenderer.render(newContactList);
 
-    liElementName.placeholder = inputName.value;
-    liElementPhone.placeholder = inputPhone.value;
-    liElementEditButton.textContent = "Ändra";
-    liElementRemoveButton.textContent = "Radera";
-
-    liElementName.disabled = true;
-    liElementPhone.disabled = true;
-
-    // liElementEditButton.addEventListener('click', (e) => {
-    //     if (e.target.disabled == true) {
-    //         e.target.disabled = false;
-    //     }
-    //     else {
-    //         e.target.disabled = true;
-    //     }
-    //     if (e.target.textContent === "Ändra") {
-    //         e.target.textContent = "Spara";
-    //     }
-    //     else {
-        //         e.target.textContent = "Ändra";
-        //     }
-        // })
-        
-    liElementRemoveButton.addEventListener('click', (e) => {
-        deleteSingleContactListEntry(contactID);
-        localStorage.setItem('contactList', JSON.stringify(contactList));
-        e.target.parentNode.remove(); 
-    })
-    
-    // The first one is purely for CSS
-    liElement.append(
-        Object.assign(document.createElement('span'), { textContent: '•' }), 
-        liElementName, 
-        liElementPhone, 
-        liElementEditButton, 
-        liElementRemoveButton
-    );
-    
-    contactULContainer.appendChild(liElement);
-
-    contactList.push(listItemObject);
-    localStorage.setItem('contactList', JSON.stringify(contactList));
-
-    inputName.value = "";
-    inputPhone.value = "";
-});
-
-deleteListButton.addEventListener('click', (e) => {
-    e.preventDefault();
-    contactList.length = 0;
-    localStorage.setItem('contactList', JSON.stringify(contactList));
-    location.reload();
+    // Reset input fields
+    inputFormName.value = '';
+    inputFormTel.value = '';
 })
 
+// B. The "Master" Event Delegation Listener
+contactULContainer.addEventListener('click', (e) => {
+    // We look at e.target to see *what* was clicked
 
-/**
- * TODO:
- * Fix the EventListener on the "Ändra knapp" DONE
- * localStorage implementation DONE
- * input Validation! DONE
- * Radera lista button DONE
- * Get editing working DONE
- * Make sure we can't add empty names or phone numbers DONE
- * Make edit button interact med localStorage DONE
- * updateContactListEntry med en bool för att ge möjlighet att remove entry eller separat funktion för att ta bort entry?
- * Gör om alla if/else till ternary operator för att öva och bli comfortable
- * Synka ALLT som är utanför Skapa eventListener pch utanför med funktioner when possible
- * Implementera så att forms töms efter varje kontakt man lägger till DONE
- * Kör en location.reload() varje gång vi skapar en ny kontakt? Vilket skulle ta bort dessa: e.target.parentNode.remove(); 
- * Är det okej att referera till och läsa contactList som en global variabel i detta scenario?
- * Array methods för att optimera koden? contains?
- * Refactor och funktionen för att uppdatera contact. Still thinking and struggling with this one
- * Ny bug? Fixa Ändra/Spara knapp
- * Prevent: "Telefonnummer kan inte innehålla bokstäver"
- */
+    // Robust contextual identity: Find the parent <li> using .closest()
+    const parentListItem = e.target.closest('li');
+    if (!parentListItem) return;
+    const id = parentListItem.dataset.id; // Get the ID via data-id
+
+    // DETELE LOGIC
+    if (e.target.classList.contains('delete-btn')) {
+        const newContactList = DataStore.removeContact(id); // Update DataStore *first*
+        ViewRenderer.render(newContactList);                // Reflect changes in the ViewRenderer "Mirror"
+    }
+
+    // EDIT/SAVE LOGIC
+    if (e.target.classList.contains('edit-btn')) {
+        const nameInput = parentListItem.querySelector('input:nth-child(2)'); // More robust than the previous e.target.parentNode.children[0]
+        const telInput = parentListItem.querySelector('input:nth-child(3)');
+
+        if (nameInput.disabled) {
+            // ENTER EDIT MODE
+            nameInput.disabled = false;
+            telInput.disabled = false;
+            e.target.textContent = "Spara";
+            nameInput.focus(); // New neat feature: Set the cursor to be in the newly "unfrozen" text field!
+        } else {
+            // SAVE CHANGES: Scrape -> Store -> Render
+            if (!nameInput.value || !telInput.value) {
+                errorMessageContainer.hidden = false;
+                errorMessageContainer.textContent = errorMessageEdit;
+                return;
+            }
+            errorMessageContainer.hidden = true;
+
+            // Re-render everything with the new updated contact
+            const newContactList = DataStore.updateContact(id, nameInput.value, telInput.value);
+            ViewRenderer.render(newContactList);
+        }
+    }
+})
+
+// C. The "Remove List" Listener
+deleteListButton.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    // Update DataStore with an empty list
+    DataStore.saveContacts([]);
+
+    // Reflect changes in the ViewRenderer "Mirror"
+    ViewRenderer.render([]);
+});
+
+// Initiad Load
+const initialContacts = DataStore.getContacts();
+ViewRenderer.render(initialContacts);
