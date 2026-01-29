@@ -68,6 +68,21 @@ const ViewRenderer = {
     }
 };
 
+// The Orchestrators! Our two Event Listeners
+// A. The "Add" Listener
+createContactButton.addEventListener('click', (e) => {
+    // To be implemented
+})
+
+// B. The "Master" Listener (Event delegation to be implemented here)
+contactULContainer.addEventListener('click', (e) => {
+    // To be implemented
+})
+
+// C. Initiad Load
+const initialContacts = DataStore.getContacts();
+ViewRenderer.render(initialContacts);
+
 let contactList;
 if (localStorage.getItem('contactList')) {
     contactList = JSON.parse(localStorage.getItem('contactList'));
