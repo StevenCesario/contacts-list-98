@@ -25,6 +25,18 @@ const DataStore = {
         
         this.saveContacts(contactList);
         return contactList;
+    },
+
+    removeContact(id) {
+        const contactList = this.getContacts();
+
+        // This replaces the for loop + splice combo
+        // Create a brand new array containing only the items that pass this specific condition
+        // It's declarative and non-mutating!
+        const updatedList = contactList.filter(c => c.id !== id);
+
+        this.saveContacts(updatedList);
+        return updatedList;
     }
 };
 
