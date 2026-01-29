@@ -167,6 +167,6 @@ deleteListButton.addEventListener('click', (e) => {
     }
 });
 
-// Initiad Load
+// Initial Load
 const initialContacts = DataStore.getContacts();
 ViewRenderer.render(initialContacts);
