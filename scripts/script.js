@@ -3,10 +3,7 @@ const inputFormTel = document.getElementById('input-phone');
 const createContactButton = document.getElementById('create-contact-button');
 const deleteListButton = document.getElementById('delete-list-button');
 const contactULContainer = document.getElementById('contact-ul-container');
-
 const errorMessageContainer = document.getElementById('error-message');
-const errorMessageCreate = "Får ej skapa tom kontakt";
-const errorMessageEdit = "Får ej spara tom kontakt";
 
 const Validator = {
     // Rule: At least 2 characters. Only letters (including Swedish ÅÄÖ), spaces, hyphens, and apostrophes.
@@ -148,11 +145,8 @@ contactULContainer.addEventListener('click', (e) => {
 
     // DETELE LOGIC
     if (e.target.classList.contains('delete-btn')) {
-        // NEW: Confirm deletion!
-        if (confirm("Är du säker på att du vill radera denna kontakt?")) {
-            const newContactList = DataStore.removeContact(id); // Update DataStore *first*
-            ViewRenderer.render(newContactList);                // Reflect changes in the ViewRenderer "Mirror"
-        }
+        const newContactList = DataStore.removeContact(id); // Update DataStore *first*
+        ViewRenderer.render(newContactList);                // Reflect changes in the ViewRenderer "Mirror"
     }
 
     // EDIT/SAVE LOGIC
@@ -194,7 +188,7 @@ deleteListButton.addEventListener('click', (e) => {
         return;
     }
 
-    // NEW: Confirm deletion
+    // Confirm deletion
     if (confirm("Är du säker på att du vill radera ALLA kontakter? Detta går inte att ångra.")) {
         // Update DataStore with an empty list
         DataStore.saveContacts([]);
