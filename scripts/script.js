@@ -89,9 +89,23 @@ createContactButton.addEventListener('click', (e) => {
     inputFormTel.value = '';
 })
 
-// B. The "Master" Listener (Event delegation to be implemented here)
+// B. The "Master" Event Delegation Listener
 contactULContainer.addEventListener('click', (e) => {
-    // To be implemented
+    // We look at e.target to see *what* was clicked
+
+    // Find the parent <li> to get the ID via data-id
+    const parentListItem = e.target.closest('li');
+    if (!parentListItem) return;
+    const id = parentListItem.dataset.id;
+
+    if (e.target.classList.contains('delete-btn')) {
+        const newContactList = DataStore.removeContact(id);
+        ViewRenderer.render(newContactList);
+    }
+
+    if (e.target.classList.contains('edit-btn')) {
+        // To be implemented. Needs a method in DataStore to update contact
+    }
 })
 
 // C. Initiad Load
