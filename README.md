@@ -1,0 +1,1 @@
+The very first assigment for the Frontend course of my Full Stack medieinstitutet studies 🌱 :)
