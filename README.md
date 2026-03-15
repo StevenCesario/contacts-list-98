@@ -9,3 +9,5 @@ This in turn has become my blueprint for the second assignment with API integrat
 I like to believe that as long as there are clear pragmatic principles to a system, even if the scale is small like a contacts list app like this, the principles still stand when you scale it up to a larger system with more functions!
 
 In that sense, this is one of the most important builds I will ever do and a rather perfect start to my Full Stack studies 🌱
+
+A Gemini-written build summary can be found at the end of the [Build Logs](./build-logs.md)
