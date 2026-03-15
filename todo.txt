@@ -1,0 +1,2 @@
+UX polishes:
+* Borrow the Swedish/English toggle from [my vibe-coded Truth or Drink web game](https://github.com/StevenCesario/truth-or-drink) (and understand the language switch mechanic now that I will intentionally implement it haha!)
