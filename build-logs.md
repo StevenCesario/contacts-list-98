@@ -2256,61 +2256,83 @@ if (e.target.id === 'back-btn') {
 ```
 
 ---
-Congratulations on completing the "Kunskapskontroll 2" assignment. This build represents a significant transition from an imperative "scripting" mindset to a professional Architectural mindset.
+Congratulations on completing the "Kunskapskontroll 2" assignment. This build represents a significant transition from an imperative "scripting" mindset to a professional **Architectural** mindset.
 
 Below is a summary of the project for your README, focusing on the technical evolution and the mastery of concepts you've demonstrated.
 
-🚀 Project: Contacts List Application (Win98 Edition)
-A lightweight, persistent contact management application built with vanilla JavaScript, styled with the nostalgic 98.css theme. The project bridges the gap between high-level web abstractions and high-performance systems architecture by treating the DOM as a reflection of state.
+---
 
-🛠️ The Architectural Shift: God Functions to Orthogonality
+## 🚀 Project: Contacts List Application (Win98 Edition)
+
+A lightweight, persistent contact management application built with vanilla JavaScript, styled with the nostalgic **98.css** theme. The project bridges the gap between high-level web abstractions and high-performance systems architecture by treating the DOM as a reflection of state.
+
+---
+
+## 🛠️ The Architectural Shift: God Functions to Orthogonality
+
 The biggest challenge—and triumph—of this build was moving away from the "God Function" approach. Initially, single event listeners handled everything from DOM manipulation to data validation and persistence.
 
-The Refactor: Separation of Concerns (SoC)
-We applied the Single Responsibility Principle (SRP) and Orthogonality to decouple the code into three distinct, independent layers:
+## The Refactor: Separation of Concerns (SoC)
 
-The DataStore (The Locker): A centralized object managing all interactions with localStorage and the contactList array.
+We applied the **Single Responsibility Principle (SRP)** and **Orthogonality** to decouple the code into three distinct, independent layers:
 
-The ViewRenderer (The Mirror): A declarative engine that renders the UI based solely on the current state of the data.
+1. **The DataStore (The Locker):** A centralized object managing all interactions with `localStorage` and the `contactList` array.
+    
+2. **The ViewRenderer (The Mirror):** A declarative engine that renders the UI based solely on the current state of the data.
+    
+3. **The Orchestrator (The Coordinator):** Lean event listeners that act as the "brain," telling the DataStore what to change and the ViewRenderer when to repaint.
+    
 
-The Orchestrator (The Coordinator): Lean event listeners that act as the "brain," telling the DataStore what to change and the ViewRenderer when to repaint.
+> **Pragmatic Win:** By isolating the "where" (storage), the "what" (data), and the "how" (UI), we achieved a system that is **Easy to Change (ETC)**—a core tenet of _The Pragmatic Programmer_.
 
-Pragmatic Win: By isolating the "where" (storage), the "what" (data), and the "how" (UI), we achieved a system that is Easy to Change (ETC)—a core tenet of The Pragmatic Programmer.
+---
 
-🪴 Key Learnings & Mastery Techniques
-1. State-Driven UI (Declarative Flow)
+## 🪴 Key Learnings & Mastery Techniques
+
+## 1. State-Driven UI (Declarative Flow)
+
 Instead of manual DOM manipulation (imperative), the UI is now a "Mirror" of the DataStore.
 
-Wiping and Painting: We use innerHTML = '' followed by insertAdjacentHTML to ensure the UI is always a perfect, non-drifting reflection of the data.
+- **Wiping and Painting:** We use `innerHTML = ''` followed by `insertAdjacentHTML` to ensure the UI is always a perfect, non-drifting reflection of the data.
+    
+- **Template Literals:** Using backticks (`` ` ``) allows for a declarative "Stencil" approach, making the HTML structure visible and readable directly within the JavaScript.
+    
 
-Template Literals: Using backticks (`) allows for a declarative "Stencil" approach, making the HTML structure visible and readable directly within the JavaScript.
+## 2. Event Delegation (The Master Listener)
 
-2. Event Delegation (The Master Listener)
-We moved from attaching thousands of individual listeners to a single Master Listener on the parent <ul>.
+We moved from attaching thousands of individual listeners to a single **Master Listener** on the parent `<ul>`.
 
-Event Bubbling: Leveraging the DOM's natural bubbling behavior to catch clicks at the top level.
+- **Event Bubbling:** Leveraging the DOM's natural bubbling behavior to catch clicks at the top level.
+    
+- **Contextual Retrieval:** Using `.closest('li')` and `dataset.id` (data attributes) to identify exactly which contact was interacted with without relying on fragile DOM indexing.
+    
 
-Contextual Retrieval: Using .closest('li') and dataset.id (data attributes) to identify exactly which contact was interacted with without relying on fragile DOM indexing.
+## 3. Functional Data Transformation
 
-3. Functional Data Transformation
-We replaced messy for loops and destructive splice() methods with cleaner, non-mutating array methods:
+We replaced messy `for` loops and destructive `splice()` methods with cleaner, non-mutating array methods:
 
-.filter(): Used for the "Sieve" logic during contact removal.
+- **`.filter()`:** Used for the "Sieve" logic during contact removal.
+    
+- **`.map()` + Spread Operator (`...`):** Used for "Shallow Copies" and immutable state updates during contact editing.
+    
 
-.map() + Spread Operator (...): Used for "Shallow Copies" and immutable state updates during contact editing.
+## 4. Memory Management Intuition
 
-4. Memory Management Intuition
-The build provided a deep dive into the Heap and Stack:
+The build provided a deep dive into the **Heap** and **Stack**:
 
-Lockers & Keys: Understanding that variables are just "Keys" (pointers) to "Lockers" (objects) in the Heap.
+- **Lockers & Keys:** Understanding that variables are just "Keys" (pointers) to "Lockers" (objects) in the Heap.
+    
+- **Garbage Collection:** Recognizing that "Ghost Lockers" are cleaned up once all reference keys are discarded.
+    
 
-Garbage Collection: Recognizing that "Ghost Lockers" are cleaned up once all reference keys are discarded.
+---
 
-🏗️ Technical Stack
-Core: Vanilla JavaScript (ES6+)
+## 🏗️ Technical Stack
 
-Persistence: Web Storage API (localStorage)
-
-Styling: 98.css
-
-Principles: DRY (Don't Repeat Yourself), Orthogonality, SoC, SRP
+- **Core:** Vanilla JavaScript (ES6+)
+    
+- **Persistence:** Web Storage API (`localStorage`)
+    
+- **Styling:** 98.css
+    
+- **Principles:** DRY (Don't Repeat Yourself), Orthogonality, SoC, SRP
