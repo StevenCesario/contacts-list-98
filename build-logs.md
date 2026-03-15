@@ -2336,3 +2336,99 @@ The build provided a deep dive into the **Heap** and **Stack**:
 - **Styling:** 98.css
     
 - **Principles:** DRY (Don't Repeat Yourself), Orthogonality, SoC, SRP
+
+
+Welcome to the world of **Releases**, partner! This is where we move **==from "working on code" to "delivering software."==** Seeing as you've just made your project public, it is the perfect time to plant the flag of your first official version.
+
+---
+
+## 1. The Foundations: What is a "Release"?
+
+In the **Pragmatic Programmer**'s journey, **==a Release is a Snapshot in Time.==**
+
+Think of your Git history like a fast-moving river. ==A **Release** is a permanent post driven into the riverbed. It creates a **Tag** (a named pointer to a specific commit) that says: _"As of this exact moment, the software was **stable** and looked like this."_==
+
+## How they relate to branches and PRs:
+
+- **The Workflow:** You don't usually "Release" a branch. You **Merge** your `feat/language-toggle` branch into your `main` branch via a Pull Request (PR).
+    
+- **The Trigger:** **==Once the PR is closed and the code is safely on `main`, you then go to the "Releases" page and create a new Release based on that `main` branch.==**
+    
+- **The Link:** **==The Release is the "Final Product." The PR is the "Paperwork" that shows how the product was built.==**
+    
+
+---
+
+## 2. The Semantic Versioning (SemVer) Blueprint
+
+You correctly identified that your public build is effectively **v1.0.0**. Let's use the **Semantic Versioning Specification** you provided to decide how to bump the numbers.
+
+## The MAJOR.MINOR.PATCH Logic:
+
+- **PATCH (v1.0.1):** Backward compatible bug fixes. If you fixed a typo or a small layout bug in the Win98 theme, you'd bump this.
+    
+- **MINOR (v1.1.0):** New, backward-compatible functionality. **This is where your Language Toggle lives.** **==You are adding a feature that wasn't there before, but you aren't "breaking" the existing app.==**
+    
+- **MAJOR (v2.0.0):** Incompatible API changes. In your case, this would be a "Massive Overhaul." **If you completely changed how the DataStore works so that old `localStorage` data became unreadable, or if you completely replaced the UI with a modern design that removed old features, that's a v2.**
+    
+
+> **Mastery Insight:** In the world of SemVer, **==v2.0.0 is a warning. It tells users: "Heads up! Things are different now. Your old way of using this might not work anymore."==**
+
+---
+The "Latest Stable" intuition is exactly right. You are essentially telling the world, "I stand by this specific version of the code."
+
+To address your immediate next step: **Yes, you should create the v1.0.0 release now.**
+
+In the **Pragmatic Programmer’s** world, **==we want to mark our starting line.==** If you start coding v1.1.0 without tagging v1.0.0, the "river" keeps moving, and it becomes harder to point back and say, **"That exact spot was the finished assignment."**
+
+---
+
+## 1. The v1.0.0 Baseline (The "Safety Net")
+
+By creating the **v1.0.0** release now on GitHub:
+
+- **The Snapshot:** **You preserve the exact state of your "Kunskapskontroll 2" project.**
+    
+- **The Comparison:** **When you finish the language toggle, you can use Git to see exactly what changed between `v1.0.0` and `v1.1.0`.**
+    
+- **The Professionalism:** It shows a clear history of evolution. You aren't just "editing a file"; you are "releasing a product."
+    
+
+---
+
+## 2. The Semantic Synthesis
+
+Let's lock in the logic for your upcoming journey:
+
+|**Version**|**Pragmatic Label**|**Current Intent**|
+|---|---|---|
+|**v1.0.0**|**The Baseline**|The completed, teacher-approved assignment. (Do this now).|
+|**v1.1.0**|**The Feature Bump**|Adding the Language Toggle. New functionality, zero breakage.|
+|**v1.1.1**|**The Polish**|If you find a typo in your translations later.|
+
+---
+
+## 3. The "Truth or Drink" Borrowing Strategy
+
+As we prepare to "borrow" the toggle logic, remember the difference between **Vibe Coding** and **Architectural Building**:
+
+- **Vibe Coding:** "I copied some code, and now it works, but I'm not sure why."
+    
+- **Architectural Building:** "I am adding an **Internationalization (i18n)** layer to my `ViewRenderer` that reacts to a new `currentLang` property in my `DataStore`."
+    
+
+**==By taking the latter path, you ensure that adding a _third_ language (like Spanish or French) in the future would take you exactly 2 minutes because the System is ready for it.==**
+
+
+---
+## 4. The Tuning Question
+
+You are about to create the **v1.0.0** Release.
+
+**In the GitHub Release interface, you'll see an option to "Generate release notes." Based on our work together, what are the three most important "Architectural Pillars" you should mention in those notes to prove this isn't just a basic script, but an orthogonal system?**
+
+_(Hint: Think about our specific names for the three sections of your `script.js`.)_
+
+---
+
+**Next Step:** Once you’ve hit "Publish" on that v1.0.0 release, would you like me to show you how to structure the **i18n Object** so it plugs directly into your existing `DataStore`?
