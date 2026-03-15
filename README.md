@@ -1,6 +1,6 @@
 Available at https://stevencesario.github.io/contacts-list-98/
 
-The very first assigment for the Frontend course of my Full Stack medieinstitutet studies :)
+The very first assigment of my Full Stack medieinstitutet studies :)
 
 It gave a very healthy and fun journey moving from my brain dumped fully working but all over the place spaghetti code with a God function to a more pragmatic orthogonal system. 
 
