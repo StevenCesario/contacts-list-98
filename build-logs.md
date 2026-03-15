@@ -2432,3 +2432,58 @@ _(Hint: Think about our specific names for the three sections of your `script.js
 ---
 
 **Next Step:** Once you’ve hit "Publish" on that v1.0.0 release, would you like me to show you how to structure the **i18n Object** so it plugs directly into your existing `DataStore`?
+
+This is the perfect moment to transition from "student turning in homework" to "engineer managing a lifecycle." Marking **v1.0.0** is your **==commitment to quality.==**
+
+Here are the answers to your "Release Checklist":
+
+---
+
+## 1. The Metadata (Tags, Targets, and Titles)
+
+- **The Tag:** **`v1.0.0`** is exactly right. It follows the SemVer standard.
+    
+- **The Target:** **`main`** is correct. In professional settings, `main` (or `master`) represents the current "stable" state of the production software.
+    
+- **The Title:** A title like **"v1.0.0 - Initial Stable Release (Assignment Build)"** is excellent. It’s clear, professional, and descriptive.
+    
+
+## 2. The Blueprint: Architectural Release Notes
+
+When you click "Generate release notes," GitHub will list your commits. You should add a section above or below that called **"Architectural Pillars"** to define the system. Here is a blueprint you can use and adapt:
+
+> ## 🚀 Architectural Pillars
+> 
+> This build moves away from imperative scripting toward an **Orthogonal System** based on the following three pillars:
+> 
+> - **The DataStore (Logic Layer):** A centralized "Locker" managing state and `localStorage` persistence. It is decoupled from the UI, ensuring data integrity regardless of the view.
+>     
+> - **The ViewRenderer (Mirror Layer):** A declarative rendering engine. It treats the UI as a pure reflection of the DataStore, utilizing a "Wipe and Paint" strategy to eliminate state drift.
+>     
+> - **The Orchestrator (Coordination Layer):** Utilizes **Event Delegation** and robust contextual retrieval (`.closest()`, `.dataset`) to coordinate between the DataStore and ViewRenderer without "God Function" bloat.
+>     
+
+## 3. The "Binaries" Question
+
+**Do you need them now?** No. For a web project (HTML/JS), the source code _is_ the product. GitHub provides a `.zip` of your code automatically.
+
+**When do you need them?** You need them when your code has to be **compiled** into a format the user can run without having your source code or programming environment.
+
+- **The C++ Text Editor:** If you build that editor, the user shouldn't have to download `main.cpp` and compile it themselves. You would compile it into `editor.exe` (Windows) or an App bundle (Mac) and attach those **binaries** to the release.
+    
+- **The Web Analogy:** If you were using a "Build Step" (like React/Vite/Webpack), some people attach a `.zip` of the final `dist/` folder (the "minified" code) as a binary, though it’s less common than in desktop software.
+    
+
+---
+
+## 4. The Tuning Question
+
+You are about to hit **"Publish Release"**.
+
+**Once you hit that button, GitHub creates a permanent "Tag." If you realize 5 minutes later that you have a typo in your README, should you delete the Release and the Tag to fix it, or should you create a new "v1.0.1" patch? Why?**
+
+_(Hint: Think about the "Permanent Post in the Riverbed" analogy. If someone else had already downloaded v1.0.0, what happens to their version if you change what "v1.0.0" means?)_
+
+---
+
+**Next Step:** Once you've published v1.0.0, we can start the **v1.1.0** "Language Toggle" branch! Would you like me to walk you through the `i18n` (translations) object setup first?
